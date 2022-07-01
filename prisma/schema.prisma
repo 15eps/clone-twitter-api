@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model User {
+  id             String           @id @default(cuid())
+  name           String
+  email          String           @unique
+  username       String           @unique
+  password       String
+  avatar         String?   @db.Text
+  tweets         Tweet[]
+  TweetReply     TweetReply[]
+  TweetLike      TweetLike[]
+  TweetLikeReply TweetLikeReply[]
+}
+
+model Tweet {
+  id         String   @id @default(cuid())
+  userId     String
+  text       String
+  created_at DateTime @default(now())
+
+  user       User         @relation(fields: [userId], references: [id],onDelete: Cascade)
+  TweetReply TweetReply[]
+  TweetLike  TweetLike[]
+
+  @@index([userId])
+}
+
+model TweetReply {
+  id             String           @id @default(cuid())
+  userId         String
+  text           String
+  created_at     DateTime         @default(now())
+  tweetId       String
+  user           User             @relation(fields: [userId], references: [id],onDelete: Cascade)
+  tweet          Tweet            @relation(fields: [tweetId], references: [id],onDelete: Cascade)
+  TweetLikeReply TweetLikeReply[]
+
+  @@index([userId])
+  @@index([tweetId])
+}
+
+model TweetLike {
+
+  userId   String
+  tweetId String
+  user     User   @relation(fields: [userId], references: [id],onDelete: Cascade)
+  tweet    Tweet  @relation(fields: [tweetId], references: [id],onDelete: Cascade)
+
+  @@id([userId, tweetId])  
+  @@index([userId])
+  @@index([tweetId])
+}
+
+model TweetLikeReply {
+
+  userId   String
+  replyId String
+  user     User       @relation(fields: [userId], references: [id],onDelete: Cascade)
+  tweet    TweetReply @relation(fields: [replyId], references: [id],onDelete: Cascade)
+
+  @@id([userId, replyId])  
+  @@index([userId])
+  @@index([replyId])
+}
