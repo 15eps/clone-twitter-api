@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 
 const prisma = new PrismaClient()
 
-export default {
+export const TweetController = {
     async getAllTweets(ctx) {
         const [, token] = ctx.request.headers?.authorization?.split(' ') || []
 

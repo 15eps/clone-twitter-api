@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 
 const prisma = new PrismaClient()
 
-export default {
+export const UserController = {
     async createUser(ctx) {
 
         const saltRounds = 10
