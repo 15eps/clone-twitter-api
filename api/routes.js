@@ -1,8 +1,8 @@
 import Router from '@koa/router'
 
-import {UserController} from './controllers/userController.js'
-import {TweetController} from './controllers/TweetController.js'
-import {ReplyController} from './controllers/ReplyController.js'
+import {UserController} from './controllers/usercontroller.js'
+import {TweetController} from './controllers/tweetcontroller.js'
+import {ReplyController} from './controllers/replycontroller.js'
 
 export const router = new Router()
 
