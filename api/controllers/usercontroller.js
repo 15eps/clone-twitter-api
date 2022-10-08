@@ -34,6 +34,7 @@ export const UserController = {
 
         } catch (error) {
             if (error.meta || error.meta.target) {
+                console.log(error)
                 ctx.status = 422
                 ctx.body = "Email ou nome de usário já em uso"
                 return
